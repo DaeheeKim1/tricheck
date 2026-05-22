@@ -742,11 +742,11 @@ export default function SurveyBuilder() {
                             className="border border-slate-150 bg-white rounded-xl p-4.5 hover:border-slate-300 transition-all flex flex-col sm:flex-row justify-between gap-4 items-start"
                           >
                             <div className="space-y-1.5 flex-1">
-                              <div className="flex flex-wrap items-center gap-1.5">
-                                <span className="text-[9px] bg-slate-900 text-white font-mono px-1.5 py-0.5 rounded font-bold">
+                              <div className="flex flex-wrap items-center gap-1.5 whitespace-nowrap">
+                                <span className="text-[9px] bg-slate-900 text-white font-mono px-1.5 py-0.5 rounded font-bold whitespace-nowrap">
                                   {q.type === "scale" ? "5점 척도" : q.type === "ab" ? "선택 A/B" : "주관식 서술"}
                                 </span>
-                                <span className="text-[9px] bg-indigo-50 text-indigo-700 font-bold px-2 py-0.5 rounded-full font-mono">
+                                <span className="text-[9px] bg-indigo-50 text-indigo-700 font-bold px-2 py-0.5 rounded-full font-mono whitespace-nowrap">
                                   대상: {q.target === "all" ? "전체 응답" : q.target === "self" ? "자가평가 전용" : q.target === "peer" ? "추천인 전용" : "면접관 전용"}
                                 </span>
                               </div>
@@ -764,27 +764,27 @@ export default function SurveyBuilder() {
 
                             {/* Actions block */}
                             {!editingTemplate.id.startsWith("template_") && (
-                              <div className="flex items-center gap-1 self-end sm:self-start">
+                              <div className="flex items-center gap-1 self-end sm:self-start shrink-0">
                                 <button
                                   onClick={() => handleOpenEditQuestion(q)}
                                   title="질문 편집"
-                                  className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-650 hover:bg-slate-50 transition-colors"
+                                  className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-650 hover:bg-slate-50 transition-colors shrink-0"
                                 >
-                                  <Edit className="h-4 w-4" />
+                                  <Edit className="h-4 w-4 shrink-0" />
                                 </button>
                                 <button
                                   onClick={() => handleDuplicateQuestion(q)}
                                   title="질문 복제"
-                                  className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-650 hover:bg-slate-50 transition-colors"
+                                  className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-650 hover:bg-slate-50 transition-colors shrink-0"
                                 >
-                                  <Copy className="h-4 w-4" />
+                                  <Copy className="h-4 w-4 shrink-0" />
                                 </button>
                                 <button
                                   onClick={() => handleDeleteQuestion(q.id)}
                                   title="질문 삭제"
-                                  className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                                  className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors shrink-0"
                                 >
-                                  <Trash2 className="h-4 w-4" />
+                                  <Trash2 className="h-4 w-4 shrink-0" />
                                 </button>
                               </div>
                             )}

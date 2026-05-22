@@ -37,35 +37,36 @@ export default function Home() {
 
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center">
             {/* Tagline */}
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-700/10 mb-6">
-              <span>🚀 3자 교차 평판 검증 시스템</span>
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700 ring-1 ring-indigo-700/10 mb-6 whitespace-nowrap">
+              <span className="whitespace-nowrap">🚀 3자 교차 평판 검증 시스템</span>
             </div>
             
-            <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-6xl max-w-4xl mx-auto leading-tight">
+            <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-6xl max-w-4xl mx-auto leading-tight break-keep">
               레퍼런스 체크,<br />
               이제 <span className="text-indigo-650 text-indigo-600 bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">5분이면</span> 끝납니다
             </h1>
             
             {/* Subcopy */}
-            <p className="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto">
-              후보자 정보를 입력하면 추천인에게 자동으로 설문이 발송되고,<br />
-              후보자·추천인·면접관의 3자 다면 평가 데이터를 AI가 실시간 분석해 완벽한 리포트를 제공합니다.
-            </p>
+            <div className="mt-6 text-base sm:text-lg leading-relaxed text-gray-600 max-w-3xl mx-auto space-y-1 break-keep">
+              <p className="whitespace-normal sm:whitespace-nowrap">후보자 정보를 입력하면 추천인에게 자동으로 설문이 발송됩니다.</p>
+              <p className="whitespace-normal sm:whitespace-nowrap">후보자·추천인·면접관의 3자 평가 데이터를 분석해</p>
+              <p className="whitespace-normal sm:whitespace-nowrap">채용 리스크 리포트를 제공합니다.</p>
+            </div>
 
             {/* CTA Buttons */}
             <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/mode-select"
-                className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-4.5 text-base font-semibold text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-500 hover:shadow-indigo-600/30 hover:-translate-y-0.5 transition-all duration-200"
+                className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-4.5 text-base font-semibold text-white shadow-lg shadow-indigo-600/20 hover:bg-indigo-500 hover:shadow-indigo-600/30 hover:-translate-y-0.5 transition-all duration-200 whitespace-nowrap"
               >
-                <span>무료로 시작하기</span>
-                <ArrowRight className="h-4 w-4" />
+                <span className="whitespace-nowrap">무료로 시작하기</span>
+                <ArrowRight className="h-4 w-4 shrink-0" />
               </Link>
               <Link
                 href="/demo-scenario"
-                className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-6 py-4.5 text-base font-semibold text-gray-700 shadow-sm hover:bg-gray-50 hover:border-gray-300 hover:-translate-y-0.5 transition-all duration-200"
+                className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-6 py-4.5 text-base font-semibold text-gray-700 shadow-sm hover:bg-gray-50 hover:border-gray-300 hover:-translate-y-0.5 transition-all duration-200 whitespace-nowrap"
               >
-                <span>데모 시나리오 보기</span>
+                <span className="whitespace-nowrap">데모 시나리오 보기</span>
               </Link>
             </div>
           </div>

@@ -283,16 +283,16 @@ export default function CreateCase() {
 
   return (
     <div className="flex-1 bg-[#F9FAFB] py-12 px-4 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-4xl">
         
         {/* Top Header */}
         <div className="mb-8">
           <Link
             href="/company/dashboard"
-            className="inline-flex items-center gap-1 text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors"
+            className="inline-flex items-center gap-1 text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors whitespace-nowrap"
           >
-            <ArrowLeft className="h-4 w-4" />
-            <span>대시보드로 돌아가기</span>
+            <ArrowLeft className="h-4 w-4 shrink-0" />
+            <span className="whitespace-nowrap">대시보드로 돌아가기</span>
           </Link>
           <h1 className="text-2xl font-extrabold text-slate-900 mt-2 tracking-tight sm:text-3xl">
             새로운 레퍼런스 체크 요청 등록
@@ -323,7 +323,7 @@ export default function CreateCase() {
                   {step > s ? "✓" : s}
                 </div>
                 
-                <span className={`mt-2 text-[10px] sm:text-xs font-bold ${
+                <span className={`mt-2 text-[10px] sm:text-xs font-bold whitespace-nowrap ${
                   step === s ? "text-indigo-600" : "text-slate-400"
                 }`}>
                   {s === 1 && "직무 선택"}
@@ -359,9 +359,9 @@ export default function CreateCase() {
                         : "border-slate-200"
                     }`}
                   >
-                    <div className="flex items-center gap-2 mb-1">
-                      <Briefcase className={`h-4.5 w-4.5 ${jobType === opt.key ? "text-indigo-600" : "text-slate-400"}`} />
-                      <span className="font-bold text-slate-900 text-sm">{opt.label}</span>
+                    <div className="flex items-center gap-2 mb-1 whitespace-nowrap">
+                      <Briefcase className={`h-4.5 w-4.5 shrink-0 ${jobType === opt.key ? "text-indigo-600" : "text-slate-400"}`} />
+                      <span className="font-bold text-slate-900 text-sm whitespace-nowrap">{opt.label}</span>
                     </div>
                     <p className="text-xs text-slate-500 leading-relaxed font-semibold">
                       <b className="text-slate-700">진단 핵심:</b> {opt.focus}
@@ -432,10 +432,10 @@ export default function CreateCase() {
                     value="as-is"
                     checked={customizationChoice === "as-is"}
                     onChange={() => setCustomizationChoice("as-is")}
-                    className="mt-1 accent-indigo-600"
+                    className="mt-1 accent-indigo-600 shrink-0"
                   />
                   <div>
-                    <span className="font-extrabold text-sm text-slate-900 block">기본 템플릿 그대로 사용</span>
+                    <span className="font-extrabold text-sm text-slate-900 block whitespace-nowrap">기본 템플릿 그대로 사용</span>
                     <span className="text-xs text-slate-500 leading-relaxed font-semibold">템플릿에 정의된 표준 {caseQuestions.length}개 평판 질문지를 별도 편집 없이 발송합니다.</span>
                   </div>
                 </label>
@@ -451,10 +451,10 @@ export default function CreateCase() {
                     value="custom"
                     checked={customizationChoice === "custom"}
                     onChange={() => setCustomizationChoice("custom")}
-                    className="mt-1 accent-indigo-600"
+                    className="mt-1 accent-indigo-600 shrink-0"
                   />
                   <div>
-                    <span className="font-extrabold text-sm text-slate-900 block">질문 커스터마이징 후 사용</span>
+                    <span className="font-extrabold text-sm text-slate-900 block whitespace-nowrap">질문 커스터마이징 후 사용</span>
                     <span className="text-xs text-slate-500 leading-relaxed font-semibold">이 케이스만을 위한 질문 추가, 내용 편집, 또는 삭제 과정을 거친 뒤 진행합니다.</span>
                   </div>
                 </label>
@@ -598,10 +598,10 @@ export default function CreateCase() {
                     {caseQuestions.map((q, idx) => (
                       <div key={q.id} className="flex justify-between items-start gap-4 bg-slate-50 border border-slate-150 p-3 rounded-xl hover:border-slate-300 transition-colors">
                         <div className="text-[11px] leading-relaxed font-semibold">
-                          <div className="flex items-center gap-1.5 mb-1 flex-wrap">
-                            <span className="bg-slate-900 text-white font-mono px-1 rounded text-[9px] font-bold">#{idx+1}</span>
-                            <span className="bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded text-[8px] font-extrabold">{q.category}</span>
-                            <span className="bg-slate-100 text-slate-655 px-1.5 py-0.5 rounded text-[8px] font-bold">대상: {q.target === "all" ? "전원" : q.target === "self" ? "자기평가" : q.target === "peer" ? "추천인" : "면접관"}</span>
+                          <div className="flex items-center gap-1.5 mb-1 flex-wrap whitespace-nowrap">
+                            <span className="bg-slate-900 text-white font-mono px-1 rounded text-[9px] font-bold whitespace-nowrap">#{idx+1}</span>
+                            <span className="bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded text-[8px] font-extrabold whitespace-nowrap">{q.category}</span>
+                            <span className="bg-slate-100 text-slate-655 px-1.5 py-0.5 rounded text-[8px] font-bold whitespace-nowrap">대상: {q.target === "all" ? "전원" : q.target === "self" ? "자기평가" : q.target === "peer" ? "추천인" : "면접관"}</span>
                           </div>
                           <span className="text-slate-900 font-extrabold block text-xs mb-0.5">{q.title}</span>
                           <span className="text-slate-600">Q. {q.question}</span>
@@ -611,23 +611,23 @@ export default function CreateCase() {
                           <button
                             type="button"
                             onClick={() => handleOpenEditQuestion(q)}
-                            className="p-1 rounded text-slate-400 hover:text-indigo-650 hover:bg-slate-200/50"
+                            className="p-1 rounded text-slate-400 hover:text-indigo-650 hover:bg-slate-200/50 shrink-0"
                           >
-                            <Edit2 className="h-3.5 w-3.5" />
+                            <Edit2 className="h-3.5 w-3.5 shrink-0" />
                           </button>
                           <button
                             type="button"
                             onClick={() => handleDuplicateQuestion(q)}
-                            className="p-1 rounded text-slate-400 hover:text-indigo-650 hover:bg-slate-200/50"
+                            className="p-1 rounded text-slate-400 hover:text-indigo-650 hover:bg-slate-200/50 shrink-0"
                           >
-                            <Copy className="h-3.5 w-3.5" />
+                            <Copy className="h-3.5 w-3.5 shrink-0" />
                           </button>
                           <button
                             type="button"
                             onClick={() => handleDeleteQuestion(q.id)}
-                            className="p-1 rounded text-slate-400 hover:text-rose-600 hover:bg-rose-100/50"
+                            className="p-1 rounded text-slate-400 hover:text-rose-600 hover:bg-rose-100/50 shrink-0"
                           >
-                            <Trash2 className="h-3.5 w-3.5" />
+                            <Trash2 className="h-3.5 w-3.5 shrink-0" />
                           </button>
                         </div>
                       </div>
@@ -648,14 +648,14 @@ export default function CreateCase() {
 
               <div className="space-y-5">
                 <div className="border border-slate-150 p-5 rounded-2xl space-y-4">
-                  <h3 className="text-sm font-extrabold text-slate-800 flex items-center gap-1">
-                    <User className="h-4.5 w-4.5 text-indigo-600" />
-                    <span>후보자 정보</span>
+                  <h3 className="text-sm font-extrabold text-slate-800 flex items-center gap-1 whitespace-nowrap">
+                    <User className="h-4.5 w-4.5 text-indigo-600 shrink-0" />
+                    <span className="whitespace-nowrap">후보자 정보</span>
                   </h3>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-slate-600 mb-1">이름 <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-bold text-slate-600 mb-1 whitespace-nowrap">이름 <span className="text-red-500">*</span></label>
                       <input
                         type="text"
                         placeholder="이름"
@@ -663,11 +663,11 @@ export default function CreateCase() {
                         onChange={(e) => setCandidateName(e.target.value)}
                         className={`w-full rounded-xl border px-3 py-2 text-xs font-semibold ${errors.candidateName ? "border-rose-400" : "border-slate-250"}`}
                       />
-                      {errors.candidateName && <span className="text-[10px] font-bold text-rose-600 mt-1 block">{errors.candidateName}</span>}
+                      {errors.candidateName && <span className="text-[10px] font-bold text-rose-600 mt-1 block whitespace-nowrap">{errors.candidateName}</span>}
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-600 mb-1">이메일 <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-bold text-slate-600 mb-1 whitespace-nowrap">이메일 <span className="text-red-500">*</span></label>
                       <input
                         type="email"
                         placeholder="candidate@example.com"
@@ -675,13 +675,13 @@ export default function CreateCase() {
                         onChange={(e) => setCandidateEmail(e.target.value)}
                         className={`w-full rounded-xl border px-3 py-2 text-xs font-semibold ${errors.candidateEmail ? "border-rose-400" : "border-slate-250"}`}
                       />
-                      {errors.candidateEmail && <span className="text-[10px] font-bold text-rose-600 mt-1 block">{errors.candidateEmail}</span>}
+                      {errors.candidateEmail && <span className="text-[10px] font-bold text-rose-600 mt-1 block whitespace-nowrap">{errors.candidateEmail}</span>}
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-slate-600 mb-1">지원 포지션명 <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-bold text-slate-600 mb-1 whitespace-nowrap">지원 포지션명 <span className="text-red-500">*</span></label>
                       <input
                         type="text"
                         placeholder="예: 프론트엔드 엔지니어"
@@ -689,11 +689,11 @@ export default function CreateCase() {
                         onChange={(e) => setCandidatePosition(e.target.value)}
                         className={`w-full rounded-xl border px-3 py-2 text-xs font-semibold ${errors.candidatePosition ? "border-rose-400" : "border-slate-250"}`}
                       />
-                      {errors.candidatePosition && <span className="text-[10px] font-bold text-rose-600 mt-1 block">{errors.candidatePosition}</span>}
+                      {errors.candidatePosition && <span className="text-[10px] font-bold text-rose-600 mt-1 block whitespace-nowrap">{errors.candidatePosition}</span>}
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-600 mb-1">채용 사명 <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-bold text-slate-600 mb-1 whitespace-nowrap">채용 사명 <span className="text-red-500">*</span></label>
                       <input
                         type="text"
                         placeholder="예: 트라이체크 코리아"
@@ -701,20 +701,20 @@ export default function CreateCase() {
                         onChange={(e) => setCandidateCompany(e.target.value)}
                         className={`w-full rounded-xl border px-3 py-2 text-xs font-semibold ${errors.candidateCompany ? "border-rose-400" : "border-slate-250"}`}
                       />
-                      {errors.candidateCompany && <span className="text-[10px] font-bold text-rose-600 mt-1 block">{errors.candidateCompany}</span>}
+                      {errors.candidateCompany && <span className="text-[10px] font-bold text-rose-600 mt-1 block whitespace-nowrap">{errors.candidateCompany}</span>}
                     </div>
                   </div>
                 </div>
 
                 <div className="border border-slate-150 p-5 rounded-2xl space-y-4">
-                  <h3 className="text-sm font-extrabold text-slate-800 flex items-center gap-1">
-                    <UserCheck className="h-4.5 w-4.5 text-indigo-600" />
-                    <span>채용 담당자 (면접관) 정보</span>
+                  <h3 className="text-sm font-extrabold text-slate-800 flex items-center gap-1 whitespace-nowrap">
+                    <UserCheck className="h-4.5 w-4.5 text-indigo-600 shrink-0" />
+                    <span className="whitespace-nowrap">채용 담당자 (면접관) 정보</span>
                   </h3>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-slate-600 mb-1">이름 <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-bold text-slate-600 mb-1 whitespace-nowrap">이름 <span className="text-red-500">*</span></label>
                       <input
                         type="text"
                         placeholder="이름"
@@ -722,11 +722,11 @@ export default function CreateCase() {
                         onChange={(e) => setInterviewerName(e.target.value)}
                         className={`w-full rounded-xl border px-3 py-2 text-xs font-semibold ${errors.interviewerName ? "border-rose-400" : "border-slate-250"}`}
                       />
-                      {errors.interviewerName && <span className="text-[10px] font-bold text-rose-600 mt-1 block">{errors.interviewerName}</span>}
+                      {errors.interviewerName && <span className="text-[10px] font-bold text-rose-600 mt-1 block whitespace-nowrap">{errors.interviewerName}</span>}
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-600 mb-1">이메일 <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-bold text-slate-600 mb-1 whitespace-nowrap">이메일 <span className="text-red-500">*</span></label>
                       <input
                         type="email"
                         placeholder="recruiter@example.com"
@@ -734,12 +734,12 @@ export default function CreateCase() {
                         onChange={(e) => setInterviewerEmail(e.target.value)}
                         className={`w-full rounded-xl border px-3 py-2 text-xs font-semibold ${errors.interviewerEmail ? "border-rose-400" : "border-slate-250"}`}
                       />
-                      {errors.interviewerEmail && <span className="text-[10px] font-bold text-rose-600 mt-1 block">{errors.interviewerEmail}</span>}
+                      {errors.interviewerEmail && <span className="text-[10px] font-bold text-rose-600 mt-1 block whitespace-nowrap">{errors.interviewerEmail}</span>}
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-600 mb-1">직함 및 부서 <span className="text-red-500">*</span></label>
+                    <label className="block text-xs font-bold text-slate-600 mb-1 whitespace-nowrap">직함 및 부서 <span className="text-red-500">*</span></label>
                     <input
                       type="text"
                       placeholder="예: HR 부장"
@@ -747,7 +747,7 @@ export default function CreateCase() {
                       onChange={(e) => setInterviewerTitle(e.target.value)}
                       className={`w-full rounded-xl border px-3 py-2.5 text-xs font-semibold ${errors.interviewerTitle ? "border-rose-400" : "border-slate-250"}`}
                     />
-                    {errors.interviewerTitle && <span className="text-[10px] font-bold text-rose-600 mt-1 block">{errors.interviewerTitle}</span>}
+                    {errors.interviewerTitle && <span className="text-[10px] font-bold text-rose-600 mt-1 block whitespace-nowrap">{errors.interviewerTitle}</span>}
                   </div>
                 </div>
               </div>
@@ -768,11 +768,11 @@ export default function CreateCase() {
               <div className="space-y-4">
                 {/* Candidate Link Box */}
                 <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3.5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full">
+                  <div className="flex items-center justify-between flex-wrap gap-2 whitespace-nowrap">
+                    <span className="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full whitespace-nowrap">
                       후보자 자기평가 & 추천인 등록 링크
                     </span>
-                    <span className="text-[10px] text-slate-400 font-bold">후보자에게 카카오톡/이메일로 발송</span>
+                    <span className="text-[10px] text-slate-400 font-bold whitespace-nowrap">후보자에게 카카오톡/이메일로 발송</span>
                   </div>
                   
                   <p className="text-xs font-bold text-slate-800 leading-relaxed">
@@ -788,28 +788,28 @@ export default function CreateCase() {
                     />
                     <button
                       onClick={() => copyToClipboard(`${window.location.origin}/candidate/invite/${generatedCaseId}`)}
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white hover:bg-slate-800 active:scale-95 transition-all shadow-sm"
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white hover:bg-slate-800 active:scale-95 transition-all shadow-sm whitespace-nowrap shrink-0"
                     >
-                      <Copy className="h-3.5 w-3.5" />
-                      <span>복사</span>
+                      <Copy className="h-3.5 w-3.5 shrink-0" />
+                      <span className="whitespace-nowrap">복사</span>
                     </button>
                     <Link
                       href={`/candidate/invite/${generatedCaseId}`}
                       target="_blank"
-                      className="inline-flex items-center gap-1 rounded-xl border border-slate-250 bg-white px-3.5 text-xs font-bold text-slate-700 hover:bg-slate-50 shadow-sm"
+                      className="inline-flex items-center justify-center gap-1 rounded-xl border border-slate-250 bg-white px-3.5 text-xs font-bold text-slate-700 hover:bg-slate-50 shadow-sm shrink-0"
                     >
-                      <ExternalLink className="h-3.5 w-3.5" />
+                      <ExternalLink className="h-3.5 w-3.5 shrink-0" />
                     </Link>
                   </div>
                 </div>
 
                 {/* Interviewer Link Box */}
                 <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-3.5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full">
+                  <div className="flex items-center justify-between flex-wrap gap-2 whitespace-nowrap">
+                    <span className="text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full whitespace-nowrap">
                       면접관 사후 관찰평가 링크
                     </span>
-                    <span className="text-[10px] text-slate-400 font-bold">지정 면접관용 개별 링크</span>
+                    <span className="text-[10px] text-slate-400 font-bold whitespace-nowrap">지정 면접관용 개별 링크</span>
                   </div>
                   
                   <p className="text-xs font-bold text-slate-800 leading-relaxed">
@@ -825,17 +825,17 @@ export default function CreateCase() {
                     />
                     <button
                       onClick={() => copyToClipboard(`${window.location.origin}/company/interviewer-assessment/${generatedCaseId}`)}
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white hover:bg-slate-800 active:scale-95 transition-all shadow-sm"
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 text-xs font-bold text-white hover:bg-slate-800 active:scale-95 transition-all shadow-sm whitespace-nowrap shrink-0"
                     >
-                      <Copy className="h-3.5 w-3.5" />
-                      <span>복사</span>
+                      <Copy className="h-3.5 w-3.5 shrink-0" />
+                      <span className="whitespace-nowrap">복사</span>
                     </button>
                     <Link
                       href={`/company/interviewer-assessment/${generatedCaseId}`}
                       target="_blank"
-                      className="inline-flex items-center gap-1 rounded-xl border border-slate-250 bg-white px-3.5 text-xs font-bold text-slate-700 hover:bg-slate-50 shadow-sm"
+                      className="inline-flex items-center justify-center gap-1 rounded-xl border border-slate-250 bg-white px-3.5 text-xs font-bold text-slate-700 hover:bg-slate-50 shadow-sm shrink-0"
                     >
-                      <ExternalLink className="h-3.5 w-3.5" />
+                      <ExternalLink className="h-3.5 w-3.5 shrink-0" />
                     </Link>
                   </div>
                 </div>
@@ -854,10 +854,10 @@ export default function CreateCase() {
               <button
                 type="button"
                 onClick={handleBack}
-                className="inline-flex items-center gap-1 bg-white border border-slate-250 text-xs font-bold text-slate-700 rounded-xl px-4 py-2.5 hover:bg-slate-50 transition-colors"
+                className="inline-flex items-center gap-1 bg-white border border-slate-250 text-xs font-bold text-slate-700 rounded-xl px-4 py-2.5 hover:bg-slate-50 transition-colors whitespace-nowrap shrink-0"
               >
-                <ArrowLeft className="h-3.5 w-3.5" />
-                <span>이전 단계</span>
+                <ArrowLeft className="h-3.5 w-3.5 shrink-0" />
+                <span className="whitespace-nowrap">이전 단계</span>
               </button>
             ) : (
               <div />
@@ -867,26 +867,26 @@ export default function CreateCase() {
               <button
                 type="button"
                 onClick={handleNext}
-                className="inline-flex items-center gap-1.5 bg-indigo-600 text-white text-xs font-bold rounded-xl px-4.5 py-2.5 hover:bg-indigo-500 shadow-sm transition-all"
+                className="inline-flex items-center gap-1.5 bg-indigo-600 text-white text-xs font-bold rounded-xl px-4.5 py-2.5 hover:bg-indigo-500 shadow-sm transition-all whitespace-nowrap shrink-0"
               >
-                <span>다음 단계</span>
-                <ArrowRight className="h-3.5 w-3.5" />
+                <span className="whitespace-nowrap">다음 단계</span>
+                <ArrowRight className="h-3.5 w-3.5 shrink-0" />
               </button>
             ) : step === 4 ? (
               <button
                 type="button"
                 onClick={handleNext}
-                className="inline-flex items-center gap-1.5 bg-indigo-650 bg-indigo-650 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white text-xs font-bold rounded-xl px-5 py-2.5 hover:from-indigo-500 hover:to-indigo-600 shadow-md shadow-indigo-600/10 transition-all"
+                className="inline-flex items-center gap-1.5 bg-indigo-650 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white text-xs font-bold rounded-xl px-5 py-2.5 hover:from-indigo-500 hover:to-indigo-600 shadow-md shadow-indigo-600/10 transition-all whitespace-nowrap shrink-0"
               >
-                <Check className="h-3.5 w-3.5" />
-                <span>레퍼런스 체크 등록 & 링크 생성</span>
+                <Check className="h-3.5 w-3.5 shrink-0" />
+                <span className="whitespace-nowrap">레퍼런스 체크 등록 & 링크 생성</span>
               </button>
             ) : (
               <Link
                 href="/company/dashboard"
-                className="inline-flex items-center justify-center bg-indigo-600 text-white text-xs font-bold rounded-xl px-5 py-2.5 hover:bg-indigo-500 shadow-sm"
+                className="inline-flex items-center justify-center bg-indigo-600 text-white text-xs font-bold rounded-xl px-5 py-2.5 hover:bg-indigo-500 shadow-sm whitespace-nowrap shrink-0"
               >
-                <span>대시보드로 가기</span>
+                <span className="whitespace-nowrap">대시보드로 가기</span>
               </Link>
             )}
           </div>
