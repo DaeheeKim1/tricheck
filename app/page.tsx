@@ -41,9 +41,9 @@ export default function Home() {
               <span>🚀 3자 교차 평판 검증 시스템</span>
             </div>
             
-            <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-6xl max-w-3xl mx-auto leading-[1.15]">
-              레퍼런스 체크, <br className="sm:hidden" />
-              이제 <span className="text-indigo-600 bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">5분</span>이면 끝납니다
+            <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-6xl max-w-4xl mx-auto leading-tight">
+              레퍼런스 체크,<br />
+              이제 <span className="text-indigo-650 text-indigo-600 bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">5분이면</span> 끝납니다
             </h1>
             
             {/* Subcopy */}
