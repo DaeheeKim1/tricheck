@@ -336,33 +336,33 @@ export default function SurveyBuilder() {
           <div>
             <Link
               href="/company/dashboard"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-indigo-650 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-indigo-650 transition-colors whitespace-nowrap"
             >
-              <ArrowLeft className="h-4.5 w-4.5" />
-              <span>대시보드로 가기</span>
+              <ArrowLeft className="h-4.5 w-4.5 shrink-0" />
+              <span className="whitespace-nowrap">대시보드로 가기</span>
             </Link>
-            <h1 className="text-3xl font-extrabold text-slate-900 mt-2 tracking-tight">
+            <h1 className="text-3xl font-extrabold text-slate-900 mt-2 tracking-tight whitespace-nowrap">
               설문 템플릿 관리
             </h1>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-2 text-sm leading-relaxed text-slate-500 max-w-4xl">
               다양한 포지션별 기본 템플릿을 선택하여 우리 회사 규정과 인재상에 맞춰 질문을 고도화할 수 있습니다.
             </p>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={handleCreateNewTemplate}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-sm font-bold text-indigo-700 shadow-sm hover:bg-indigo-100 transition-all"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-2.5 text-sm font-bold text-indigo-700 shadow-sm hover:bg-indigo-100 transition-all whitespace-nowrap shrink-0"
             >
-              <Plus className="h-4 w-4" />
+              <Plus className="h-4 w-4 shrink-0" />
               <span>신규 템플릿 빌드</span>
             </button>
             {editingTemplate && !editingTemplate.id.startsWith("template_") && (
               <button
                 onClick={handleSave}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4.5 py-2.5 text-sm font-bold text-white shadow-md hover:bg-indigo-500 transition-all"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4.5 py-2.5 text-sm font-bold text-white shadow-md hover:bg-indigo-500 transition-all whitespace-nowrap shrink-0"
               >
-                <Save className="h-4 w-4" />
+                <Save className="h-4 w-4 shrink-0" />
                 <span>커스텀 템플릿 저장</span>
               </button>
             )}
@@ -370,18 +370,18 @@ export default function SurveyBuilder() {
         </div>
 
         {/* Info Banner */}
-        <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-4.5 mb-10 flex gap-3 items-start shadow-sm">
+        <div className="bg-indigo-50 border border-indigo-100 rounded-2xl p-4.5 mb-10 flex gap-3 items-start shadow-sm max-w-7xl">
           <Info className="h-5.5 w-5.5 text-indigo-600 shrink-0 mt-0.5" />
           <div className="text-xs sm:text-sm text-indigo-955 leading-relaxed font-semibold">
-            <p className="font-bold text-indigo-950 mb-0.5">💡 안내문구</p>
+            <p className="font-bold text-indigo-955 mb-0.5 whitespace-nowrap">💡 안내문구</p>
             기존 템플릿을 기반으로 우리 회사에 맞는 질문을 추가하거나 불필요한 질문을 제거할 수 있습니다. 시스템 기본 제공 템플릿은 변경 불가하지만, **[복제 및 커스터마이징]** 버튼을 통해 쉽게 편집이 가능해집니다.
           </div>
         </div>
 
         {/* Section 1: Template Cards Grid */}
         <div className="mb-12">
-          <h2 className="text-lg font-bold text-slate-800 mb-5 flex items-center gap-1.5">
-            <Bookmark className="h-5 w-5 text-indigo-600" />
+          <h2 className="text-lg font-bold text-slate-800 mb-5 flex items-center gap-1.5 whitespace-nowrap">
+            <Bookmark className="h-5 w-5 text-indigo-600 shrink-0" />
             <span>제공 중인 설문 템플릿 목록</span>
           </h2>
           
@@ -402,7 +402,7 @@ export default function SurveyBuilder() {
                 >
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap ${
                         isDefault 
                           ? "bg-slate-100 text-slate-700" 
                           : "bg-indigo-50 text-indigo-700 border border-indigo-100"
@@ -410,25 +410,25 @@ export default function SurveyBuilder() {
                         {isDefault ? "기본 제공" : "기업 커스텀"}
                       </span>
                       {isSelected && (
-                        <span className="h-2 w-2 rounded-full bg-indigo-600 animate-ping" />
+                        <span className="h-2 w-2 rounded-full bg-indigo-600 animate-ping shrink-0" />
                       )}
                     </div>
 
-                    <h3 className="text-base font-bold text-slate-900 tracking-tight line-clamp-1 mb-1.5">
+                    <h3 className="text-base font-bold text-slate-900 tracking-tight line-clamp-1 mb-1.5 whitespace-nowrap overflow-hidden text-overflow-ellipsis">
                       {t.name}
                     </h3>
-                    <p className="text-xs text-slate-500 leading-normal line-clamp-3 mb-4">
+                    <p className="text-xs text-slate-500 leading-normal line-clamp-3 mb-4 font-semibold">
                       {t.description}
                     </p>
                   </div>
 
                   <div className="border-t border-slate-100 pt-4 mt-auto">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-slate-400">
-                        질문 수: <b className="text-slate-700">{t.questions?.length || 0}개</b>
+                      <span className="text-[11px] font-bold text-slate-400 whitespace-nowrap">
+                        질문 수: <b className="text-slate-700 whitespace-nowrap">{t.questions?.length || 0}개</b>
                       </span>
                       
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-1 shrink-0">
                         <button
                           type="button"
                           onClick={(e) => {
@@ -436,9 +436,9 @@ export default function SurveyBuilder() {
                             handleDuplicateTemplate(t);
                           }}
                           title="복제하여 새 커스텀 템플릿 만들기"
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-600 hover:bg-slate-50 transition-colors"
+                          className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-655 hover:bg-slate-50 transition-colors shrink-0"
                         >
-                          <Copy className="h-4 w-4" />
+                          <Copy className="h-4 w-4 shrink-0" />
                         </button>
 
                         {!isDefault && (
@@ -449,9 +449,9 @@ export default function SurveyBuilder() {
                               handleDeleteTemplate(t.id);
                             }}
                             title="템플릿 삭제"
-                            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                            className="p-1.5 rounded-lg text-slate-400 hover:text-rose-650 hover:bg-rose-50 transition-colors shrink-0"
                           >
-                            <Trash2 className="h-4 w-4" />
+                            <Trash2 className="h-4 w-4 shrink-0" />
                           </button>
                         )}
                       </div>
@@ -531,8 +531,8 @@ export default function SurveyBuilder() {
               {/* Category Weight Control Card */}
               <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm space-y-4">
                 <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                  <h4 className="text-sm font-bold text-slate-900">가중치 배분 비율</h4>
-                  <span className={`text-[10px] font-bold font-mono px-2 py-0.5 rounded-full ${
+                  <h4 className="text-sm font-bold text-slate-900 whitespace-nowrap">가중치 배분 비율</h4>
+                  <span className={`text-[10px] font-bold font-mono px-2 py-0.5 rounded-full whitespace-nowrap shrink-0 ${
                     Math.abs(Object.values(editingTemplate.weights).reduce((a, b) => a + b, 0) - 1.0) < 0.01
                       ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
                       : "bg-amber-50 text-amber-700 border border-amber-100"
@@ -545,13 +545,13 @@ export default function SurveyBuilder() {
                   {Object.keys(editingTemplate.weights).map(cat => {
                     const weightVal = editingTemplate.weights[cat] || 0;
                     return (
-                      <div key={cat} className="space-y-1.5">
+                      <div key={cat} className="space-y-1.5 font-medium">
                         <div className="flex items-center justify-between text-xs font-bold">
-                          <span className="flex items-center gap-1.5 text-slate-700">
-                            {getCategoryIcon(cat)}
-                            {cat}
+                          <span className="flex items-center gap-1.5 text-slate-700 whitespace-nowrap">
+                            <span className="shrink-0">{getCategoryIcon(cat)}</span>
+                            <span className="whitespace-nowrap">{cat}</span>
                           </span>
-                          <span className="font-mono text-indigo-650">{Math.round(weightVal * 100)}%</span>
+                          <span className="font-mono text-indigo-650 whitespace-nowrap shrink-0">{Math.round(weightVal * 100)}%</span>
                         </div>
                         <input
                           type="range"
@@ -577,16 +577,16 @@ export default function SurveyBuilder() {
                 {/* Header inside list */}
                 <div className="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900">설문 질문지 구성</h3>
-                    <p className="text-xs text-slate-500 mt-0.5">각 카테고리 영역에 포함된 평가 문항입니다.</p>
+                    <h3 className="text-lg font-bold text-slate-900 whitespace-nowrap">설문 질문지 구성</h3>
+                    <p className="text-xs text-slate-500 mt-0.5 whitespace-nowrap">각 카테고리 영역에 포함된 평가 문항입니다.</p>
                   </div>
 
                   {!editingTemplate.id.startsWith("template_") && (
                     <button
                       onClick={handleOpenAddQuestion}
-                      className="inline-flex items-center gap-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2 px-3.5 rounded-xl transition-all shadow-sm"
+                      className="inline-flex items-center gap-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold py-2 px-3.5 rounded-xl transition-all shadow-sm whitespace-nowrap shrink-0"
                     >
-                      <PlusCircle className="h-4 w-4" />
+                      <PlusCircle className="h-4 w-4 shrink-0" />
                       <span>질문 추가</span>
                     </button>
                   )}
@@ -595,8 +595,8 @@ export default function SurveyBuilder() {
                 {/* Form: Add/Edit Question */}
                 {isAddingQuestion && (
                   <div className="border border-indigo-150 bg-indigo-50/10 p-5 rounded-2xl mb-6 space-y-4 animate-in fade-in duration-200">
-                    <h4 className="text-sm font-bold text-indigo-950 flex items-center gap-1.5 border-b border-indigo-100 pb-2">
-                      <Sparkles className="h-4 w-4 text-indigo-500" />
+                    <h4 className="text-sm font-bold text-indigo-955 flex items-center gap-1.5 border-b border-indigo-100 pb-2 whitespace-nowrap">
+                      <Sparkles className="h-4 w-4 text-indigo-500 shrink-0" />
                       <span>{editingQuestionId ? "질문 수정" : "새 질문 추가"}</span>
                     </h4>
 
