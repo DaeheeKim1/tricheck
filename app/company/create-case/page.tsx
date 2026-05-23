@@ -45,8 +45,8 @@ export default function CreateCase() {
   const [templates, setTemplates] = useState<SurveyTemplate[]>([]);
   
   // Case configurations
-  const [jobType, setJobType] = useState<JobTypeKey>("pm");
-  const [selectedTemplateId, setSelectedTemplateId] = useState<string>("template_pm");
+  const [jobType, setJobType] = useState<JobTypeKey>("general");
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>("template_general");
   const [caseQuestions, setCaseQuestions] = useState<SurveyQuestion[]>([]);
   const [customizationChoice, setCustomizationChoice] = useState<"as-is" | "custom">("as-is");
   
@@ -69,7 +69,7 @@ export default function CreateCase() {
   const [isAddingQuestion, setIsAddingQuestion] = useState(false);
   const [editingQuestionId, setEditingQuestionId] = useState<string | null>(null);
   const [newQuestion, setNewQuestion] = useState<Partial<SurveyQuestion>>({
-    category: "",
+    category: "업무성향",
     type: "scale",
     target: "all",
     title: "",
@@ -83,10 +83,10 @@ export default function CreateCase() {
     setTemplates(list);
     
     // Select initial template
-    const pmTemp = list.find(t => t.jobType === "pm");
-    if (pmTemp) {
-      setSelectedTemplateId(pmTemp.id);
-      setCaseQuestions(JSON.parse(JSON.stringify(pmTemp.questions)));
+    const defaultTemp = list.find(t => t.jobType === "general");
+    if (defaultTemp) {
+      setSelectedTemplateId(defaultTemp.id);
+      setCaseQuestions(JSON.parse(JSON.stringify(defaultTemp.questions)));
     }
   }, []);
 
@@ -192,7 +192,7 @@ export default function CreateCase() {
         if (q.id === editingQuestionId) {
           return {
             ...q,
-            category: newQuestion.category || "기본 카테고리",
+            category: newQuestion.category || "업무성향",
             title: newQuestion.title || "",
             question: newQuestion.question || "",
             type: newQuestion.type as QuestionType,
@@ -208,7 +208,7 @@ export default function CreateCase() {
     } else {
       const added: SurveyQuestion = {
         id: `custom_q_${Date.now()}`,
-        category: newQuestion.category || "기본 카테고리",
+        category: newQuestion.category || "업무성향",
         title: newQuestion.title,
         question: newQuestion.question,
         type: newQuestion.type as QuestionType,
@@ -221,7 +221,7 @@ export default function CreateCase() {
 
     setIsAddingQuestion(false);
     setNewQuestion({
-      category: "",
+      category: "업무성향",
       type: "scale",
       target: "all",
       title: "",
@@ -269,14 +269,23 @@ export default function CreateCase() {
   };
 
   const jobTypeOptions = [
-    { key: "general", label: "기본 레퍼런스 체크", focus: "업무성향, 조직적합성, 협업성향 균형 평가" },
-    { key: "developer", label: "개발자 채용", focus: "문제 해결력, 업무 신뢰도, 협업 방식, 코드 리뷰, 일정 관리" },
-    { key: "designer", label: "디자이너 채용", focus: "사용자 관점, 피드백 수용, 협업 소통, 창의성/실행 균형, 일정 산출물" },
-    { key: "hr", label: "인사/HR 채용", focus: "커뮤니케이션, 신뢰성, 조직문화 이해, 민감정보 처리, 갈등 조율" },
-    { key: "accounting", label: "회계 채용", focus: "정확성, 규정 준수, 반복 업무 신뢰도, 마감 대응, 세부사항 검토" },
-    { key: "finance", label: "재무 채용", focus: "데이터 기반 판단, 리스크 관리, 전략적 사고, 보고서 작성, 의사결정 지원" },
-    { key: "sales", label: "영업 채용", focus: "실행력, 커뮤니케이션, 목표 달성, 고객 대응, 회복탄력성" },
-    { key: "pm", label: "PM/기획 채용", focus: "우선순위 판단, 문제 정의, 데이터 의사결정, 크로스펑셔널 협업, 실행 관리" }
+    { key: "general", label: "기본 레퍼런스 체크", focus: "업무성향, 조직적합성, 협업성향, 리스크 대응, 커뮤니케이션 균형 평가" },
+    { key: "backend_developer", label: "백엔드 개발자 채용", focus: "서버 설계 안정성, 예외 처리, 비동기 커뮤니케이션, 시스템 장애 리스크 예방" },
+    { key: "frontend_developer", label: "프론트엔드 개발자 채용", focus: "UI/UX 디테일, 크로스 브라우징 리스크, 기민한 컴포넌트 협업 및 일정 준수" },
+    { key: "fullstack_developer", label: "풀스택 개발자 채용", focus: "전체 벨류체인 아키텍처 이해도, 멀티 태스킹 주도성, 유연한 R&R 협업 소통력" },
+    { key: "data_analyst", label: "데이터 분석가 채용", focus: "계량화 문제 규명, 데이터 해석력, 비즈니스 가설 검증 신뢰도와 논리적 보고서" },
+    { key: "product_manager", label: "프로덕트 매니저(PM) 채용", focus: "우선순위 판단 비즈니스 모델, 다기능 부서 갈등 중재, 강력한 스토리텔링 설득력과 리스크 통제" },
+    { key: "product_designer", label: "프로덕트 디자이너(UX/UI) 채용", focus: "사용자 중심 정성 조사, 피그마 가이드라인 공유 방식, 피드백 수용성과 일정 내 퀄리티 준수" },
+    { key: "graphic_designer", label: "그래픽 디자이너 채용", focus: "독창적 심미성 트렌드 감각, 마케팅 부서와의 협업 커뮤니케이션 및 시한 임박 속 완성도" },
+    { key: "sales_manager", label: "영업 관리자 채용", focus: "영업 쿼타 수립, 계약 마진 방어 협상력, 팀원 모티베이션 정서 케어와 실적 압박 복원력" },
+    { key: "b2b_sales_executive", label: "B2B 영업 대표 채용", focus: "고부가가치 리드 질적 공략, 고객사 컴플레인 완숙 대처, 딜 클로징 추진력과 대고객 커뮤니케이션" },
+    { key: "hr_recruiter", label: "채용 리크루터 채용", focus: "우수 인재 발굴 네트워킹, 대외 브랜드 전파, 채용 프로세스 규정 준수와 부서 간 일정 소통력" },
+    { key: "hr_business_partner", label: "HRBP 채용", focus: "인사 고충 중립 상담력, 조직 개편 변화 수용 조율, 경영 전략 정렬 및 사내 기밀 유출 보안 관리" },
+    { key: "accountant", label: "회계 담당자 채용", focus: "증빙 검토 1원 대조 정확성, 세법 컴플라이언스 준수, 월말 마감 시한 압박 대응력" },
+    { key: "financial_analyst", label: "재무 분석가 채용", focus: "투자 예산 시나리오 설계, 외환/금리 유동성 모니터링, 재무 보고서 투명성과 데이터 의사결정" },
+    { key: "marketing_manager", label: "마케팅 매니저 채용", focus: "브랜드 가치 스토리텔링, 마케팅 예산 효율 통제, 유관 에이전시 협업 조율 및 캠페인 적시 실행력" },
+    { key: "performance_marketer", label: "퍼포먼스 마케터 채용", focus: "정량적 매체 ROI 데이터 최적화, 기동적 가설 A/B 테스트, 매체 예산 소진 리스크 관리력" },
+    { key: "operations_manager", label: "오퍼레이션 매니저 채용", focus: "운영 프로세스 병목 규명, 서비스 가용성 장애 통제, R&R 경계 허무는 협조력 및 매뉴얼 예외 대응" }
   ];
 
   const jobTemplates = templates.filter(t => t.jobType === jobType);
@@ -399,7 +408,7 @@ export default function CreateCase() {
                     </div>
                     <p className="text-xs text-slate-500 leading-normal mb-3 font-semibold">{t.description}</p>
                     <div className="flex flex-wrap gap-1.5 mt-2">
-                      {Object.keys(t.weights).map((cat) => (
+                      {(Object.keys(t.weights) as QuestionCategory[]).map((cat) => (
                         <span key={cat} className="text-[10px] bg-indigo-50/50 text-indigo-700 px-2 py-0.5 rounded-full border border-indigo-100 font-bold">
                           {cat} ({Math.round(t.weights[cat]*100)}%)
                         </span>
@@ -497,7 +506,7 @@ export default function CreateCase() {
                             type="text"
                             placeholder="예: 문제 해결력"
                             value={newQuestion.category}
-                            onChange={(e) => setNewQuestion({ ...newQuestion, category: e.target.value })}
+                            onChange={(e) => setNewQuestion({ ...newQuestion, category: e.target.value as QuestionCategory })}
                             className="w-full bg-white border border-slate-250 rounded-lg p-2 text-xs"
                           />
                         </div>

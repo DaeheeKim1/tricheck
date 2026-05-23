@@ -25,7 +25,8 @@ import {
   Zap,
   BookOpen,
   Info,
-  Sparkles
+  Sparkles,
+  Compass
 } from "lucide-react";
 import { getReport, getRequest, getTemplateById, getAppMode, setAppMode, ReferenceReport, ReferenceRequest } from "@/lib/storage";
 import { jobProfiles, QuestionCategory, SurveyQuestion, JobTypeKey } from "@/lib/questions";
@@ -156,6 +157,16 @@ function ReportContent() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [appMode, setAppModeState] = useState<'real' | 'demo'>('real');
 
+  const handleDemoCaseChange = (caseKey: string) => {
+    localStorage.setItem("tricheck_active_demo_case", caseKey);
+    // Trigger reactive state updates
+    const rep = getReport(id);
+    setReport(rep);
+    if (rep) {
+      setRequest(getRequest(id));
+    }
+  };
+
   useEffect(() => {
     setAppModeState(getAppMode());
     const handleModeChange = () => {
@@ -172,51 +183,7 @@ function ReportContent() {
       const rep = getReport(id);
       setReport(rep);
       if (rep) {
-        if (id === "demo") {
-          setRequest({
-            id: "demo",
-            candidate: {
-              name: rep.candidate.name,
-              email: "gildong.hong@example.com",
-              position: rep.candidate.position,
-              company: rep.candidate.company
-            },
-            referees: [
-              { name: "이민우", email: "minwoo@example.com", relation: "전 직장 상사" },
-              { name: "박지수", email: "jisu@example.com", relation: "전 직장 동료" },
-              { name: "최진아", email: "jina@example.com", relation: "협업 부서 담당자" }
-            ],
-            interviewer: { name: "이철수", email: "chulsoo@example.com", title: "HR 파트장" },
-            jobType: rep.jobType,
-            templateId: "template_pm",
-            customQuestions: jobProfiles[rep.jobType]?.questions || [],
-            createdAt: rep.createdAt,
-            status: "completed"
-          });
-        } else if (id === "case_demo_general") {
-          setRequest({
-            id: "case_demo_general",
-            candidate: {
-              name: rep.candidate.name,
-              email: "taehee.kim@example.com",
-              position: rep.candidate.position,
-              company: rep.candidate.company
-            },
-            referees: [
-              { name: "이종민", email: "jongmin@example.com", relation: "전 직장 상사" },
-              { name: "최수연", email: "sooyeon@example.com", relation: "전 직장 동료" },
-              { name: "정다은", email: "daeun@example.com", relation: "협업 부서 담당자" }
-            ],
-            interviewer: { name: "박성호", email: "sungho.park@example.com", title: "인사팀장" },
-            jobType: "general",
-            templateId: "template_general",
-            customQuestions: jobProfiles.general?.questions || [],
-            createdAt: rep.createdAt,
-            status: "completed"
-          });
-        } else {
-          setRequest(getRequest(id));
-        }
+        setRequest(getRequest(id));
       }
       setIsLoaded(true);
     }
@@ -362,12 +329,28 @@ function ReportContent() {
         
         {/* Navigation Actions (Hidden on Print) */}
         {appMode === "demo" ? (
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 no-print bg-slate-900 text-white p-4.5 rounded-2xl border border-slate-800 shadow-lg">
-            <div className="flex items-center gap-2">
-              <span className="bg-violet-600 text-white font-extrabold px-2.5 py-1 rounded-lg text-xs tracking-wide animate-pulse">
-                DEMO SCENARIO
-              </span>
-              <span className="text-xs text-slate-300 font-semibold">데모 시나리오 모드로 리포트를 임시 조회 중입니다.</span>
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 no-print bg-slate-900 text-white p-5 rounded-2xl border border-slate-800 shadow-lg">
+            <div className="flex flex-col gap-2.5">
+              <div className="flex items-center gap-2">
+                <span className="bg-violet-600 text-white font-extrabold px-2.5 py-1 rounded-lg text-[10px] tracking-wide animate-pulse">
+                  DEMO SCENARIO
+                </span>
+                <span className="text-xs text-slate-300 font-semibold">데모 시나리오 모드로 리포트를 임시 조회 중입니다.</span>
+              </div>
+              <div className="flex items-center gap-2 text-xs">
+                <span className="text-slate-400 font-medium">데모 케이스 전환:</span>
+                <select
+                  value={localStorage.getItem("tricheck_active_demo_case") || "demo_stable"}
+                  onChange={(e) => handleDemoCaseChange(e.target.value)}
+                  className="bg-slate-800 border border-slate-700 text-white rounded-lg px-2.5 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-semibold cursor-pointer"
+                >
+                  <option value="demo_overconfident">자신감 과다형 (김민수 - 백엔드 개발자)</option>
+                  <option value="demo_stable">안정형 (이지훈 - PM)</option>
+                  <option value="demo_inconsistent">평가 불일치형 (박서연 - 프로덕트 디자이너)</option>
+                  <option value="demo_conflict">면접관 충돌형 (최현우 - B2B 영업대표)</option>
+                  <option value="demo_specialized">편향된 역량형 (정유진 - 퍼포먼스 마케터)</option>
+                </select>
+              </div>
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <button
@@ -754,9 +737,23 @@ function ReportContent() {
           {/* Adjustments details */}
           <div className="rounded-2xl border border-gray-150 bg-white p-6 shadow-sm flex flex-col print:shadow-none print:border-gray-300">
             <h3 className="text-sm font-bold text-gray-800 border-b border-gray-100 pb-3 mb-4">
-              06. 신뢰도 보정 점수 세부 조정내역
+              06. 데이터 신뢰도 및 보정 내역 (Reliability & Adjustments)
             </h3>
             
+            <div className="mb-4 bg-slate-50 border border-slate-100 p-3.5 rounded-xl text-xs space-y-2">
+              <div className="flex justify-between items-center font-bold text-gray-700">
+                <span>데이터 신뢰 지수 (Consistency Index)</span>
+                <span className="text-indigo-650 text-indigo-600 font-mono font-extrabold">{report.consistencyScore}%</span>
+              </div>
+              <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-full bg-indigo-600 rounded-full" style={{ width: `${report.consistencyScore}%` }}></div>
+              </div>
+              <div className="flex justify-between items-center text-[10px] text-gray-400 font-semibold">
+                <span>추천인 간 의견 편차: {report.peerDeviation}점</span>
+                <span>종합 리스크 수준: {report.riskLevel}</span>
+              </div>
+            </div>
+
             <div className="space-y-3.5 text-xs">
               <div className="flex justify-between items-center bg-gray-50 p-2.5 rounded-lg font-bold text-gray-600 print:bg-gray-100">
                 <span>지표 항목</span>
@@ -936,12 +933,55 @@ function ReportContent() {
 
         </div>
 
+        {/* Risks & Considerations Block */}
+        {(report.risks || report.considerations) && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 print:grid-cols-2 print-page-break">
+            {/* Risks */}
+            <div className="rounded-2xl border border-red-150 bg-red-50/10 p-6 sm:p-8 shadow-sm print:shadow-none print:border-red-300 print-avoid-break">
+              <h3 className="text-sm font-bold text-red-900 flex items-center gap-1.5 mb-4">
+                <ShieldAlert className="h-5 w-5 text-red-650 shrink-0" />
+                <span>10. 이 후보자의 주요 리스크 (Primary Risks)</span>
+              </h3>
+              <ul className="space-y-3">
+                {(report.risks || []).map((risk, idx) => (
+                  <li key={idx} className="flex gap-2 items-start text-xs font-semibold text-red-950 bg-white border border-red-100 p-3.5 rounded-xl shadow-sm leading-relaxed">
+                    <span className="text-red-600 font-mono font-bold">0{idx + 1}.</span>
+                    <span>{risk}</span>
+                  </li>
+                ))}
+                {(!report.risks || report.risks.length === 0) && (
+                  <li className="text-xs text-gray-500 italic p-3 text-center">감지된 주요 리스크가 없습니다.</li>
+                )}
+              </ul>
+            </div>
+
+            {/* Considerations */}
+            <div className="rounded-2xl border border-indigo-150 bg-indigo-50/10 p-6 sm:p-8 shadow-sm print:shadow-none print:border-indigo-300 print-avoid-break">
+              <h3 className="text-sm font-bold text-indigo-900 flex items-center gap-1.5 mb-4">
+                <Compass className="h-5 w-5 text-indigo-600 shrink-0" />
+                <span>11. 채용 시 고려사항 및 가이드 (Hiring Considerations)</span>
+              </h3>
+              <ul className="space-y-3">
+                {(report.considerations || []).map((cons, idx) => (
+                  <li key={idx} className="flex gap-2 items-start text-xs font-semibold text-indigo-950 bg-white border border-indigo-100 p-3.5 rounded-xl shadow-sm leading-relaxed">
+                    <span className="text-indigo-600 font-mono font-bold">0{idx + 1}.</span>
+                    <span>{cons}</span>
+                  </li>
+                ))}
+                {(!report.considerations || report.considerations.length === 0) && (
+                  <li className="text-xs text-gray-500 italic p-3 text-center">작성된 고려사항이 없습니다.</li>
+                )}
+              </ul>
+            </div>
+          </div>
+        )}
+
         {/* 7. Detailed Question Answers Table Breakdown Page Break */}
         <div className="space-y-6 print:space-y-4 print-page-break">
           <div className="border-b border-gray-200 pb-3">
             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
               <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-indigo-600 text-white text-xs font-bold">✓</span>
-              <span>10. 상세 진단 문항 및 다면 응답 비교</span>
+              <span>12. 상세 진단 문항 및 다면 응답 비교</span>
             </h2>
             <p className="text-xs text-gray-400 mt-1 leading-normal">
               각 진단 항목별로 면접자 자가 평가, 추천인 3인의 개별 응답, 면접관 평가를 일대일로 대조하여 심층 분석합니다.

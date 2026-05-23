@@ -112,9 +112,11 @@ export default function SurveyBuilder() {
       jobType: "general",
       description: "우리 기업 인재상에 맞춰 질문 구성을 설정하는 맞춤형 템플릿입니다.",
       weights: {
-        "업무성향": 0.34,
-        "조직적합성": 0.33,
-        "협업성향": 0.33
+        "업무성향": 0.20,
+        "조직적합성": 0.20,
+        "협업성향": 0.20,
+        "리스크 대응": 0.20,
+        "커뮤니케이션": 0.20
       },
       questions: [...defaultQuestions]
     };
@@ -239,7 +241,7 @@ export default function SurveyBuilder() {
       // Clean up unused weights if category has 0 questions now
       const currentWeights = { ...editingTemplate.weights };
       const activeCategories = new Set(updatedQuestions.map(q => q.category));
-      Object.keys(currentWeights).forEach(cat => {
+      (Object.keys(currentWeights) as QuestionCategory[]).forEach(cat => {
         if (!activeCategories.has(cat)) {
           delete currentWeights[cat];
         }
@@ -498,13 +500,22 @@ export default function SurveyBuilder() {
                       className="w-full rounded-xl border border-slate-250 px-3.5 py-2.5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 disabled:bg-slate-50 disabled:text-slate-400 bg-white"
                     >
                       <option value="general">기본 레퍼런스 체크</option>
-                      <option value="developer">개발자 채용</option>
-                      <option value="designer">디자이너 채용</option>
-                      <option value="hr">인사/HR 채용</option>
-                      <option value="accounting">회계 채용</option>
-                      <option value="finance">재무 채용</option>
-                      <option value="sales">영업 채용</option>
-                      <option value="pm">PM/기획 채용</option>
+                      <option value="backend_developer">백엔드 개발자 채용</option>
+                      <option value="frontend_developer">프론트엔드 개발자 채용</option>
+                      <option value="fullstack_developer">풀스택 개발자 채용</option>
+                      <option value="data_analyst">데이터 분석가 채용</option>
+                      <option value="product_manager">프로덕트 매니저(PM) 채용</option>
+                      <option value="product_designer">프로덕트 디자이너(UX/UI) 채용</option>
+                      <option value="graphic_designer">그래픽 디자이너 채용</option>
+                      <option value="sales_manager">영업 관리자 채용</option>
+                      <option value="b2b_sales_executive">B2B 영업 대표 채용</option>
+                      <option value="hr_recruiter">채용 리크루터 채용</option>
+                      <option value="hr_business_partner">HRBP 채용</option>
+                      <option value="accountant">회계 담당자 채용</option>
+                      <option value="financial_analyst">재무 분석가 채용</option>
+                      <option value="marketing_manager">마케팅 매니저 채용</option>
+                      <option value="performance_marketer">퍼포먼스 마케터 채용</option>
+                      <option value="operations_manager">오퍼레이션 매니저 채용</option>
                     </select>
                   </div>
 
@@ -542,7 +553,7 @@ export default function SurveyBuilder() {
                 </div>
 
                 <div className="space-y-4">
-                  {Object.keys(editingTemplate.weights).map(cat => {
+                  {(Object.keys(editingTemplate.weights) as QuestionCategory[]).map(cat => {
                     const weightVal = editingTemplate.weights[cat] || 0;
                     return (
                       <div key={cat} className="space-y-1.5 font-medium">
@@ -605,7 +616,7 @@ export default function SurveyBuilder() {
                         <label className="block text-xs font-bold text-slate-500 mb-1">진단 영역 (카테고리)</label>
                         <select
                           value={newQuestion.category}
-                          onChange={(e) => setNewQuestion({ ...newQuestion, category: e.target.value })}
+                          onChange={(e) => setNewQuestion({ ...newQuestion, category: e.target.value as QuestionCategory })}
                           className="w-full bg-white border border-slate-250 text-xs rounded-xl px-3 py-2.5 focus:outline-none"
                         >
                           {Object.keys(editingTemplate.weights).map(cat => (
@@ -616,13 +627,13 @@ export default function SurveyBuilder() {
                       </div>
 
                       {/* Custom Category Input if selected */}
-                      {newQuestion.category === "새 카테고리" && (
+                      {(newQuestion.category as string) === "새 카테고리" && (
                         <div className="sm:col-span-2">
                           <label className="block text-xs font-bold text-slate-500 mb-1">새 카테고리명</label>
                           <input
                             type="text"
                             placeholder="예: 문제 해결력, 업무 신뢰도 등"
-                            onChange={(e) => setNewQuestion({ ...newQuestion, category: e.target.value })}
+                            onChange={(e) => setNewQuestion({ ...newQuestion, category: e.target.value as QuestionCategory })}
                             className="w-full bg-white border border-slate-250 text-xs rounded-xl px-3 py-2.5 focus:outline-none text-slate-900 font-semibold"
                           />
                         </div>

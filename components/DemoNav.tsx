@@ -42,8 +42,8 @@ export default function DemoNav() {
         email: "taeyoung@example.com",
         title: "채용 총괄 디렉터"
       },
-      jobType: "pm",
-      templateId: "template_pm",
+      jobType: "product_manager",
+      templateId: "template_product_manager",
       customQuestions: [...defaultQuestions],
       createdAt: new Date().toISOString().split("T")[0],
       status: "pending"

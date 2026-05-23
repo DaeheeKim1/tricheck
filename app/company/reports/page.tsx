@@ -19,6 +19,59 @@ import {
 import { getAllRequests, getAppMode, setAppMode, ReferenceReport, getReport, ReferenceRequest } from "@/lib/storage";
 import { jobProfiles } from "@/lib/questions";
 
+const demoCases = [
+  {
+    key: "demo_overconfident",
+    title: "자신감 과다형 후보자",
+    name: "김민수",
+    position: "백엔드 개발자 (Backend Developer)",
+    company: "카카오 테크",
+    badge: "인식 격차 큼 ⚠️",
+    badgeColor: "text-amber-700 bg-amber-50 border-amber-200",
+    riskHighlight: "피드백 수용성 부족 • 과대 포장"
+  },
+  {
+    key: "demo_stable",
+    title: "안정형 후보자",
+    name: "이지훈",
+    position: "프로덕트 매니저 (Product Manager)",
+    company: "네이버 웍스",
+    badge: "조화롭고 우수 ✅",
+    badgeColor: "text-green-700 bg-green-50 border-green-200",
+    riskHighlight: "리스크 낮음 • 신뢰도 극히 높음"
+  },
+  {
+    key: "demo_inconsistent",
+    title: "평가 불일치형 후보자",
+    name: "박서연",
+    position: "프로덕트 디자이너 (UX/UI)",
+    company: "토스 스튜디오",
+    badge: "동료 평판 불일치 🔍",
+    badgeColor: "text-indigo-700 bg-indigo-50 border-indigo-200",
+    riskHighlight: "칸막이 협업 • 직군 간 갈등"
+  },
+  {
+    key: "demo_conflict",
+    title: "면접관 충돌형 후보자",
+    name: "최현우",
+    position: "B2B 영업 대표 (Sales Executive)",
+    company: "쿠팡 비즈니스",
+    badge: "면접관 갈등 🚨",
+    badgeColor: "text-red-700 bg-red-50 border-red-200",
+    riskHighlight: "단기 성과 지향 • 대면 신뢰도 저하"
+  },
+  {
+    key: "demo_specialized",
+    title: "편향된 역량형 후보자",
+    name: "정유진",
+    position: "퍼포먼스 마케터 (Performance Marketer)",
+    company: "배달의민족",
+    badge: "조직 규정 위반 우려 🛑",
+    badgeColor: "text-purple-700 bg-purple-50 border-purple-200",
+    riskHighlight: "규정 회피 • 하이 리스크 성향"
+  }
+];
+
 export default function ReportsPage() {
   const router = useRouter();
   const [appMode, setAppModeState] = useState<'real' | 'demo'>('real');
@@ -60,6 +113,11 @@ export default function ReportsPage() {
   const handleSwitchToDemo = () => {
     setAppMode('demo');
     router.push("/demo-scenario");
+  };
+
+  const handleDemoCardClick = (key: string) => {
+    localStorage.setItem("tricheck_active_demo_case", key);
+    router.push("/company/report/demo");
   };
 
   // Filter completed cases for Real Flow
@@ -130,67 +188,75 @@ export default function ReportsPage() {
                 <div>
                   <h3 className="font-extrabold text-violet-950 text-sm">데모 시나리오 모드 활성화 중</h3>
                   <p className="mt-1 text-xs text-violet-900 font-medium leading-relaxed">
-                    데모 시나리오 모드에서는 3-Point 평판 조회가 완벽히 수행된 PM 직군의 고품질 샘플 보고서 데이터가 상시 활성화됩니다. <br />
-                    아래 카드를 클릭해 Tricheck의 3자 교차 평판 분석 최종 산출물을 빠르게 검증해 보세요.
+                    tricheck의 핵심 리포트 분석 기능을 바로 확인할 수 있도록 설계된 5가지 시나리오가 활성화되었습니다.<br />
+                    아래 카드를 클릭해 각 후보자의 특징이 반영된 가중치 설계, 자기인식 격차, 그리고 데이터 신뢰도 분석 결과를 대조해 보세요.
                   </p>
                 </div>
               </div>
-              <button
-                onClick={() => router.push("/company/report/demo")}
-                className="bg-violet-600 hover:bg-violet-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center gap-1 self-start md:self-auto shrink-0 transition-all shadow-md shadow-violet-600/10"
-              >
-                <span>데모 리포트 바로가기</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </button>
             </div>
 
             {/* Demo Card List */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div 
-                onClick={() => router.push("/company/report/demo")}
-                className="group cursor-pointer rounded-2xl border border-violet-150 bg-white p-6 shadow-sm hover:shadow-xl hover:border-violet-300 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
-              >
-                <div className="absolute top-0 right-0 -mt-6 -mr-6 h-20 w-20 rounded-full bg-violet-500/10 blur-xl pointer-events-none group-hover:scale-150 transition-all duration-500"></div>
-                
-                <div className="flex items-center justify-between mb-4.5">
-                  <span className="text-[10px] font-bold bg-violet-50 text-violet-700 border border-violet-100 px-2 py-0.5 rounded">
-                    DEMO REPORT
-                  </span>
-                  <span className="text-[10px] font-bold text-gray-400 font-mono">
-                    2026-05-22
-                  </span>
-                </div>
+              {demoCases.map((c) => {
+                const overallScore = getReport(c.key)?.overall || 80;
+                return (
+                  <div 
+                    key={c.key}
+                    onClick={() => handleDemoCardClick(c.key)}
+                    className="group cursor-pointer rounded-2xl border border-violet-150 bg-white p-6 shadow-sm hover:shadow-xl hover:border-violet-300 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
+                  >
+                    <div className="absolute top-0 right-0 -mt-6 -mr-6 h-20 w-20 rounded-full bg-violet-500/10 blur-xl pointer-events-none group-hover:scale-150 transition-all duration-500"></div>
+                    
+                    <div className="flex items-center justify-between mb-4.5">
+                      <span className={`text-[10px] font-bold border px-2 py-0.5 rounded ${c.badgeColor}`}>
+                        {c.badge}
+                      </span>
+                      <span className="text-[10px] font-bold text-gray-400 font-mono">
+                        2026-05-22
+                      </span>
+                    </div>
 
-                <h3 className="text-lg font-bold text-gray-900 group-hover:text-violet-650 group-hover:text-violet-600 transition-colors mb-2">
-                  홍길동 후보자 평판 보고서
-                </h3>
+                    <h3 className="text-lg font-bold text-gray-900 group-hover:text-violet-650 group-hover:text-violet-600 transition-colors mb-1">
+                      {c.name} 후보자 평판 보고서
+                    </h3>
+                    
+                    <p className="text-[11px] text-gray-400 font-semibold mb-3">
+                      {c.title}
+                    </p>
 
-                <div className="space-y-2 mt-4.5 text-xs text-gray-500 font-medium">
-                  <div className="flex items-center gap-2">
-                    <Award className="h-4 w-4 text-violet-500" />
-                    <span>지원 포지션: <b>프로덕트 매니저 (PM)</b></span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Building2 className="h-4 w-4 text-violet-500" />
-                    <span>요청 회사: <b>트라이체크</b></span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <UserCheck className="h-4 w-4 text-violet-500" />
-                    <span>추천인 수: <b>3명 완료</b></span>
-                  </div>
-                </div>
+                    <div className="space-y-2 mt-4.5 text-xs text-gray-500 font-medium">
+                      <div className="flex items-center gap-2">
+                        <Award className="h-4 w-4 text-violet-500 shrink-0" />
+                        <span>지원 포지션: <b>{c.position}</b></span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Building2 className="h-4 w-4 text-violet-500 shrink-0" />
+                        <span>요청 회사: <b>{c.company}</b></span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <UserCheck className="h-4 w-4 text-violet-500 shrink-0" />
+                        <span>추천인 수: <b>3명 완료</b></span>
+                      </div>
+                      <div className="flex items-center gap-2 pt-1">
+                        <span className="text-red-500 text-[10px] font-bold bg-red-50 border border-red-100/50 px-1.5 py-0.5 rounded">
+                          {c.riskHighlight}
+                        </span>
+                      </div>
+                    </div>
 
-                <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-2xl font-mono font-extrabold text-violet-600">89</span>
-                    <span className="text-[10px] text-gray-400 font-bold uppercase mt-1">종합 점수</span>
+                    <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-2xl font-mono font-extrabold text-violet-600">{overallScore}점</span>
+                        <span className="text-[10px] text-gray-400 font-bold uppercase mt-1">종합 점수</span>
+                      </div>
+                      <div className="flex items-center gap-0.5 text-xs font-bold text-violet-600 group-hover:gap-1.5 transition-all">
+                        <span>보고서 상세 읽기</span>
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-0.5 text-xs font-bold text-violet-600 group-hover:gap-1.5 transition-all">
-                    <span>보고서 상세 읽기</span>
-                    <ArrowRight className="h-3.5 w-3.5" />
-                  </div>
-                </div>
-              </div>
+                );
+              })}
             </div>
           </div>
         )}
