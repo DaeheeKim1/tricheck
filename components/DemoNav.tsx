@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Sparkles, Compass, Users, User, UserCheck, BarChart3, Settings, HelpCircle, X, ChevronUp, ChevronDown } from "lucide-react";
 import { getAllRequests, ReferenceRequest, saveRequest } from "@/lib/storage";
-import { defaultQuestions } from "@/lib/questions";
+import { defaultQuestions, JobTypeKey } from "@/lib/questions";
 
 export default function DemoNav() {
   const router = useRouter();
@@ -23,27 +23,132 @@ export default function DemoNav() {
 
   // Create an instant test case to simulate flows
   const handleCreateInstantCase = () => {
+    const pool = [
+      {
+        name: "김도현",
+        email: "dohyun@example.com",
+        position: "백엔드 개발자 (Backend Developer)",
+        company: "라인 플러스",
+        jobType: "backend_developer" as JobTypeKey,
+        templateId: "template_backend_developer",
+        referees: [
+          { name: "강준우", email: "junwoo@example.com", relation: "전 직장 상사" },
+          { name: "최윤서", email: "yoonseo@example.com", relation: "전 직장 동료" },
+          { name: "황민재", email: "minjae@example.com", relation: "협업 부서 담당자" }
+        ],
+        interviewer: {
+          name: "손정우",
+          email: "jungwoo@example.com",
+          title: "인프라 파트장"
+        }
+      },
+      {
+        name: "이채원",
+        email: "chaewon@example.com",
+        position: "프론트엔드 개발자 (Frontend Developer)",
+        company: "카카오브레인",
+        jobType: "frontend_developer" as JobTypeKey,
+        templateId: "template_frontend_developer",
+        referees: [
+          { name: "조현우", email: "hyunwoo@example.com", relation: "전 직장 팀장" },
+          { name: "신지아", email: "jia@example.com", relation: "전 직장 동료" },
+          { name: "유진우", email: "jinwoo@example.com", relation: "협업 기획자" }
+        ],
+        interviewer: {
+          name: "박영수",
+          email: "youngsoo@example.com",
+          title: "개발팀 챕터리드"
+        }
+      },
+      {
+        name: "정민우",
+        email: "minwoo@example.com",
+        position: "B2B 영업대표 (Sales Executive)",
+        company: "당근 비즈니스",
+        jobType: "b2b_sales_executive" as JobTypeKey,
+        templateId: "template_b2b_sales_executive",
+        referees: [
+          { name: "송재하", email: "jaeha@example.com", relation: "전 직장 지점장" },
+          { name: "백서진", email: "seojin@example.com", relation: "전 직장 동료" },
+          { name: "임지호", email: "jiho@example.com", relation: "주요 고객사 담당자" }
+        ],
+        interviewer: {
+          name: "한상현",
+          email: "sanghyun@example.com",
+          title: "영업 실장"
+        }
+      },
+      {
+        name: "한소희",
+        email: "sohee@example.com",
+        position: "프로덕트 디자이너 (UX/UI)",
+        company: "야놀자 테크",
+        jobType: "product_designer" as JobTypeKey,
+        templateId: "template_product_designer",
+        referees: [
+          { name: "서지원", email: "jiwon@example.com", relation: "전 직장 디자인 팀장" },
+          { name: "장민석", email: "minseok@example.com", relation: "전 직장 동료 개발자" },
+          { name: "권아름", email: "areum@example.com", relation: "기획 파트너" }
+        ],
+        interviewer: {
+          name: "최수아",
+          email: "sua@example.com",
+          title: "디자인 센터장"
+        }
+      },
+      {
+        name: "박준서",
+        email: "junseo@example.com",
+        position: "데이터 분석가 (Data Analyst)",
+        company: "직방",
+        jobType: "data_analyst" as JobTypeKey,
+        templateId: "template_data_analyst",
+        referees: [
+          { name: "배현우", email: "hyunwoo2@example.com", relation: "전 직장 팀장" },
+          { name: "안소율", email: "soyul@example.com", relation: "전 직장 동료 분석가" },
+          { name: "윤성민", email: "sungmin@example.com", relation: "협업 마케팅 담당자" }
+        ],
+        interviewer: {
+          name: "김동현",
+          email: "donghyun@example.com",
+          title: "데이터 본부장"
+        }
+      },
+      {
+        name: "서지민",
+        email: "jimin@example.com",
+        position: "퍼포먼스 마케터 (Performance Marketer)",
+        company: "컬리",
+        jobType: "performance_marketer" as JobTypeKey,
+        templateId: "template_performance_marketer",
+        referees: [
+          { name: "이다은", email: "daeun@example.com", relation: "전 직장 마케팅 팀장" },
+          { name: "문태오", email: "taeo@example.com", relation: "전 직장 동료" },
+          { name: "정재욱", email: "jaewook@example.com", relation: "대행사 파트장" }
+        ],
+        interviewer: {
+          name: "홍하준",
+          email: "hajun@example.com",
+          title: "그로스 마케팅 디렉터"
+        }
+      }
+    ];
+
+    const selected = pool[Math.floor(Math.random() * pool.length)];
     const newId = "demo_" + Math.random().toString(36).substring(2, 9);
+
     const newCase: ReferenceRequest = {
       id: newId,
       candidate: {
-        name: "홍길동",
-        email: "gildong@example.com",
-        position: "PM",
-        company: "테크이노베이터"
+        name: selected.name,
+        email: selected.email,
+        position: selected.position,
+        company: selected.company
       },
-      referees: [
-        { name: "이민우", email: "minwoo@example.com", relation: "전 직장 상사" },
-        { name: "박지수", email: "jisu@example.com", relation: "전 직장 동료" },
-        { name: "최진아", email: "jina@example.com", relation: "협업 부서 담당자" }
-      ],
-      interviewer: {
-        name: "김태영",
-        email: "taeyoung@example.com",
-        title: "채용 총괄 디렉터"
-      },
-      jobType: "product_manager",
-      templateId: "template_product_manager",
+      referees: selected.referees,
+      interviewer: selected.interviewer,
+      jobType: selected.jobType,
+      templateId: selected.templateId,
       customQuestions: [...defaultQuestions],
       createdAt: new Date().toISOString().split("T")[0],
       status: "pending"
@@ -53,7 +158,7 @@ export default function DemoNav() {
     setSelectedCaseId(newId);
     setCases(getAllRequests());
     router.push(`/company/case/${newId}`);
-    alert(`데모용 레퍼런스 체크 케이스가 성공적으로 생성되었습니다!\n대상 후보자: 홍길동 (PM)`);
+    alert(`데모용 레퍼런스 체크 케이스가 성공적으로 생성되었습니다!\n대상 후보자: ${selected.name} (${selected.position})`);
   };
 
   const handleNavigate = (path: string) => {
