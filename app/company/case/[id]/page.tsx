@@ -27,6 +27,107 @@ import {
   ReferenceRequest 
 } from "@/lib/storage";
 
+function getJobSpecificAnswer(jobType: string, category: string, respondent: 'self' | 'peer' | 'interviewer', peerIdx?: number): string {
+  let domain = "general";
+  if (["backend_developer", "frontend_developer", "fullstack_developer"].includes(jobType)) {
+    domain = "tech";
+  } else if (["product_designer", "graphic_designer"].includes(jobType)) {
+    domain = "design";
+  } else if (["product_manager", "operations_manager", "hr_recruiter", "hr_business_partner"].includes(jobType)) {
+    domain = "pm_hr";
+  } else if (["sales_manager", "b2b_sales_executive", "marketing_manager", "performance_marketer"].includes(jobType)) {
+    domain = "sales_mkt";
+  } else if (["data_analyst", "accountant", "financial_analyst"].includes(jobType)) {
+    domain = "data_finance";
+  }
+
+  if (category === "업무성향") {
+    if (respondent === 'self') {
+      if (domain === "tech") return "클라우드 마이그레이션과 대용량 트래픽 처리를 성공적으로 설계하고 병목 현상을 40% 개선하는 비즈니스 임팩트를 냈습니다.";
+      if (domain === "design") return "디자인 시스템을 선제 구축하여 프론트엔드와 마찰을 방지하고 디자인 생산성을 2배로 증가시켰습니다.";
+      if (domain === "pm_hr") return "고객 지표 분석을 통해 최우선 비즈니스 과제를 규명하고 로드맵 설정을 완성해 사용자 리텐션을 크게 높였습니다.";
+      if (domain === "sales_mkt") return "주요 B2B 타겟 리드를 공격적으로 발굴하고 제안 프로세스를 혁신하여 연간 수주 매출 150%를 초과 달성했습니다.";
+      if (domain === "data_finance") return "데이터 파이프라인 정비 및 정확한 예산 흐름 예측을 통해 매월 경영 의사결정의 오차범위를 최소화시켰습니다.";
+      return "목표 성과 달성을 위해 우선순위를 주도적으로 정의하고 예외 사항에 대비하는 성공적인 성과 기여를 해왔습니다.";
+    } else if (respondent === 'peer') {
+      const idx = peerIdx || 0;
+      if (idx === 0) {
+        if (domain === "tech") return "기술적 완성도와 구조적 우수성을 유지하면서도 배포 기한을 성실하게 맞춰낸 역량이 검증되었습니다.";
+        if (domain === "design") return "트렌디한 비주얼 감각과 체계적인 피그마 컴포넌트 관리가 뛰어났던 주도적인 디자이너입니다.";
+        if (domain === "pm_hr") return "이해관계 부서들 간의 의견 대립 속에서 명확한 목표 지표를 리드하며 스펙 아웃라인을 잘 구축해 냈습니다.";
+        if (domain === "sales_mkt") return "탁월한 목표 지향성과 딜 클로징 추진력을 통해 영업 본부 내 핵심 성과를 이끈 고성과자입니다.";
+        if (domain === "data_finance") return "작은 전산 오차도 사전에 방어하고 철저한 데이터 컴플라이언스를 고수하는 신뢰도 높은 인재입니다.";
+        return "안정성과 성과 목표를 골고루 지향하며 주어진 과업 이상을 주도적으로 완수하는 동료입니다.";
+      } else if (idx === 1) {
+        return "동료들과의 코드 리뷰나 기획 스케치 공유를 매우 충실하게 주도하며 팀의 핵심 가치를 높여 주었습니다.";
+      } else {
+        return "과업 조율 시 마찰이 적고, 병목 상황 발생 시 적극적으로 다른 담당자를 서포트하여 일정을 성공적으로 도왔습니다.";
+      }
+    } else {
+      if (domain === "tech") return "백엔드/프론트엔드 하드스킬이 확실하고 아키텍처 예외 처리에 대한 주관이 뚜렷하여 기술 검증을 마쳤습니다.";
+      if (domain === "design") return "사용자 중심의 가설 검증 프로세스가 튼튼하고 디자인과 테크의 연계 이해도가 우수합니다.";
+      if (domain === "pm_hr") return "프로덕트 지수 관리 및 인사이트 공유력이 명료하며 수평적인 커뮤니케이션 매너를 확인했습니다.";
+      if (domain === "sales_mkt") return "수치적인 세일즈 성과 달성 모델과 컴플라이언스 인식이 양호하게 대조되어 입사가 추천됩니다.";
+      if (domain === "data_finance") return "데이터 모델링 및 예산 분석 정확성이 매우 꼼꼼하며 논리적 설득 수준이 평균 이상입니다.";
+      return "전반적인 실무 경험과 역량 증명이 면접 과정에서 안정적으로 확인되어 당사 기준에 부합합니다.";
+    }
+  }
+
+  if (category === "조직적합성") {
+    if (respondent === 'self') {
+      return "수평적이고 솔직한 피드백 문화를 지향하며, 비즈니스 성장을 위한 투명한 정보 공유와 조화를 중요하게 생각합니다.";
+    } else if (respondent === 'peer') {
+      const idx = peerIdx || 0;
+      if (idx === 0) return "회사의 보안 및 정보 유출 관리 규정을 모범적으로 이행하고 팀의 정서적 사기 진작에도 크게 기여했습니다.";
+      if (idx === 1) return "피드백에 방어적이지 않고 항상 열린 질문을 던지며 동료들의 의견을 정중하게 존중해 주었습니다.";
+      return "조직의 조화와 행정적 준수 절차를 철저히 지키며 비판적 태도 대신 건설적인 성장을 선호하는 동료입니다.";
+    } else {
+      return "자가 인식과 평판이 조화로우며 당사 핵심 조직 가치인 상호 신뢰와 협업 중심 문화에 빠르게 녹아들 성향입니다.";
+    }
+  }
+
+  if (category === "협업성향") {
+    if (respondent === 'self') {
+      return "갈등 시 데이터 지표 중심의 논리적 합의와 정서적 공감 케어를 병행해 장기적인 신뢰를 구축합니다.";
+    } else if (respondent === 'peer') {
+      const idx = peerIdx || 0;
+      if (idx === 0) return "업무적 신념을 주장할 때 지나친 고집이 없으며, 비즈니스 최적의 지점을 위해 논리적 양보도 잘 조율했습니다.";
+      if (idx === 1) return "본인 성과만을 고집하지 않고 팀 전체의 공유 지식 창출을 위해 내부 위키 정리를 자발적으로 기여했습니다.";
+      return "협업한 동료들이 항상 신뢰를 보내며, 커뮤니케이션 흐름에서 가장 마찰이 없고 유쾌했던 동료입니다.";
+    } else {
+      return "부서 간 갈등 상황 시 본인의 설득 방식을 유연하게 조율하려는 지적 태도가 엿보여 협업 만족도가 기대됩니다.";
+    }
+  }
+
+  if (category === "리스크 대응") {
+    if (respondent === 'self') {
+      return "자주 발생하는 휴먼 에러를 방지하기 위해 개인 체크리스트를 상시 운용하고 신규 기기 배포 전 철저한 사전 테스트를 거칩니다.";
+    } else if (respondent === 'peer') {
+      const idx = peerIdx || 0;
+      if (idx === 0) return "정보 보안 의식이 탁거하며 기밀 자산 관리에 틈이 없었으며, 위험을 사전 감지해 대비책을 자주 발의했습니다.";
+      if (idx === 1) return "문제나 리스크가 감지되었을 때 뒤늦게 수습하기보다 실시간으로 얼리 워닝을 공유하여 피해를 사전에 예방합니다.";
+      return "작은 전산 데이터 변경이나 계약 조항 검증 시 절차대로 꼼꼼히 확인하여 에러 발생률을 대폭 제어해 주었습니다.";
+    } else {
+      return "위험 발생 시 실시간 투명 보고를 옹호하고 사전 보안 가이드라인에 따른 성실한 이행 의지를 확인했습니다.";
+    }
+  }
+
+  if (category === "커뮤니케이션") {
+    if (respondent === 'self') {
+      return "감정을 배제한 정량적 사실 중심의 간결한 비동기 보고와 빠른 구두 소통을 유연하게 활용합니다.";
+    } else if (respondent === 'peer') {
+      const idx = peerIdx || 0;
+      if (idx === 0) return "상황 보고 시 논점이 정제되어 있고, 회의 리드 시 의제를 신속하게 결정하여 시간 낭비를 제어합니다.";
+      if (idx === 1) return "메시지 가독성이 훌륭해 슬랙 소통만으로도 핵심 의도를 오차 없이 전달하고 경청 능력이 좋습니다.";
+      return "상대방 주장의 이면 맥락을 빠르게 해독하며 정중하고 부드러운 스피치 스타일을 보여주었습니다.";
+    } else {
+      return "전달하려는 의도가 논리적이고 깔끔하며, 면접 중 구체적 사실에 입각한 정량적 설명 방식이 우수했습니다.";
+    }
+  }
+
+  return "해당 사항 없음.";
+}
+
 export default function CaseDetails() {
   const router = useRouter();
   const params = useParams();
@@ -67,14 +168,16 @@ export default function CaseDetails() {
     const selfAnswers = questions.map(q => {
       if (q.type === "ab") return Math.random() > 0.4 ? "A" : "B";
       if (q.type === "scale") return (Math.floor(Math.random() * 2) + 4).toString(); // 4 or 5
-      return "저는 목표지향적이면서 팀원들의 피드백을 기민하게 경청하여 지속적인 성과를 만들어내는 데 강점을 두고 있습니다.";
+      return getJobSpecificAnswer(request.jobType, q.category, 'self');
     });
 
-    const referees = [
-      { name: "이민우", email: "minwoo@example.com", relation: "전 직장 상사" },
-      { name: "박지수", email: "jisu@example.com", relation: "전 직장 동료" },
-      { name: "최진아", email: "jina@example.com", relation: "협업 부서 담당자" }
-    ];
+    const referees = request.referees && request.referees.length >= 3
+      ? request.referees
+      : [
+          { name: "이민우", email: "minwoo@example.com", relation: "전 직장 상사" },
+          { name: "박지수", email: "jisu@example.com", relation: "전 직장 동료" },
+          { name: "최진아", email: "jina@example.com", relation: "협업 부서 담당자" }
+        ];
 
     const updated: ReferenceRequest = {
       ...request,
@@ -99,10 +202,15 @@ export default function CaseDetails() {
     // Gen answers for peer 0, 1, 2
     const peerAnswers: Record<string, string[]> = {};
     ["0", "1", "2"].forEach(pIdx => {
+      const peerIdx = parseInt(pIdx, 10);
       peerAnswers[pIdx] = questions.map(q => {
         if (q.type === "ab") return Math.random() > 0.3 ? "A" : "B";
-        if (q.type === "scale") return (Math.floor(Math.random() * 3) + 3).toString(); // 3, 4, 5
-        return `${request.candidate.name}님은 업무 책임감이 매우 강하고 난관이 있어도 적극적으로 돌파하여 팀원들의 신뢰가 두터운 분이었습니다.`;
+        if (q.type === "scale") {
+          if (peerIdx === 0) return (Math.floor(Math.random() * 2) + 4).toString(); // 4 or 5
+          if (peerIdx === 1) return (Math.floor(Math.random() * 2) + 4).toString(); // 4 or 5
+          return (Math.floor(Math.random() * 3) + 3).toString(); // 3, 4, or 5
+        }
+        return getJobSpecificAnswer(request.jobType, q.category, 'peer', peerIdx);
       });
     });
 
@@ -123,7 +231,7 @@ export default function CaseDetails() {
     const interviewerAnswers = questions.map(q => {
       if (q.type === "ab") return Math.random() > 0.5 ? "A" : "B";
       if (q.type === "scale") return (Math.floor(Math.random() * 3) + 3).toString(); // 3, 4, 5
-      return "면접에서 관찰한 결과 비즈니스 도메인 이해도가 높고 커뮤니케이션 흐름이 명료하여 협업 생산성이 높을 것으로 진단했습니다.";
+      return getJobSpecificAnswer(request.jobType, q.category, 'interviewer');
     });
 
     const updated: ReferenceRequest = {
@@ -143,25 +251,27 @@ export default function CaseDetails() {
 
     // 1. Candidate
     const selfAnswers = questions.map(q => {
-      if (q.type === "ab") return "A";
-      if (q.type === "scale") return "5";
-      return "체계적인 설계와 주도적인 과업 집중으로 성공을 보장합니다.";
+      if (q.type === "ab") return Math.random() > 0.4 ? "A" : "B";
+      if (q.type === "scale") return (Math.floor(Math.random() * 2) + 4).toString(); // 4 or 5
+      return getJobSpecificAnswer(request.jobType, q.category, 'self');
     });
 
-    const referees = [
-      { name: "이민우", email: "minwoo@example.com", relation: "전 직장 상사" },
-      { name: "박지수", email: "jisu@example.com", relation: "전 직장 동료" },
-      { name: "최진아", email: "jina@example.com", relation: "협업 부서 담당자" }
-    ];
+    const referees = request.referees && request.referees.length >= 3
+      ? request.referees
+      : [
+          { name: "이민우", email: "minwoo@example.com", relation: "전 직장 상사" },
+          { name: "박지수", email: "jisu@example.com", relation: "전 직장 동료" },
+          { name: "최진아", email: "jina@example.com", relation: "협업 부서 담당자" }
+        ];
 
     // 2. Peers
     const peerAnswers: Record<string, string[]> = {};
-    peerAnswers["0"] = questions.map(q => (q.type === "ab" ? "A" : q.type === "scale" ? "4" : "소통이 부드럽고 피드백을 잘 경청합니다."));
-    peerAnswers["1"] = questions.map(q => (q.type === "ab" ? "B" : q.type === "scale" ? "5" : "전문성이 매우 우수하여 믿고 맡길 수 있습니다."));
-    peerAnswers["2"] = questions.map(q => (q.type === "ab" ? "A" : q.type === "scale" ? "4" : "일정 준수가 명확하고 협업 조율을 잘 해냅니다."));
+    peerAnswers["0"] = questions.map(q => (q.type === "ab" ? "A" : q.type === "scale" ? "4" : getJobSpecificAnswer(request.jobType, q.category, 'peer', 0)));
+    peerAnswers["1"] = questions.map(q => (q.type === "ab" ? "B" : q.type === "scale" ? "5" : getJobSpecificAnswer(request.jobType, q.category, 'peer', 1)));
+    peerAnswers["2"] = questions.map(q => (q.type === "ab" ? "A" : q.type === "scale" ? "4" : getJobSpecificAnswer(request.jobType, q.category, 'peer', 2)));
 
     // 3. Interviewer
-    const interviewerAnswers = questions.map(q => (q.type === "ab" ? "B" : q.type === "scale" ? "4" : "종합 면접 관찰 결과 우수하게 평가되었습니다."));
+    const interviewerAnswers = questions.map(q => (q.type === "ab" ? "B" : q.type === "scale" ? "4" : getJobSpecificAnswer(request.jobType, q.category, 'interviewer')));
 
     const updated: ReferenceRequest = {
       ...request,

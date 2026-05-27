@@ -28,7 +28,7 @@ import {
   Sparkles,
   Compass
 } from "lucide-react";
-import { getReport, getRequest, getTemplateById, getAppMode, setAppMode, ReferenceReport, ReferenceRequest } from "@/lib/storage";
+import { getReport, getRequest, getAllRequests, getTemplateById, getAppMode, setAppMode, ReferenceReport, ReferenceRequest } from "@/lib/storage";
 import { jobProfiles, QuestionCategory, SurveyQuestion, JobTypeKey } from "@/lib/questions";
 
 // Visual 3-Point Evaluation Triangle Component
@@ -156,15 +156,31 @@ function ReportContent() {
   const [request, setRequest] = useState<ReferenceRequest | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [appMode, setAppModeState] = useState<'real' | 'demo'>('real');
+  const [activeTab, setActiveTab] = useState<"summary" | "details">("summary");
+  const [demoCases, setDemoCases] = useState<ReferenceRequest[]>([]);
+
+  const staticDemoKeys = ["demo_overconfident", "demo_stable", "demo_inconsistent", "demo_conflict", "demo_specialized"];
+  
+  const allDemoOptions = [
+    { id: "demo_stable", name: "안정형 (이지훈 - PM)" },
+    { id: "demo_overconfident", name: "자신감 과다형 (김민수 - 백엔드 개발자)" },
+    { id: "demo_inconsistent", name: "평가 불일치형 (박서연 - 프로덕트 디자이너)" },
+    { id: "demo_conflict", name: "면접관 충돌형 (최현우 - B2B 영업대표)" },
+    { id: "demo_specialized", name: "편향된 역량형 (정유진 - 퍼포먼스 마케터)" }
+  ];
+
+  demoCases.forEach(c => {
+    if (!staticDemoKeys.includes(c.id) && c.id.startsWith("demo_")) {
+      allDemoOptions.push({
+        id: c.id,
+        name: `신규 데모: ${c.candidate.name} (${c.candidate.position})`
+      });
+    }
+  });
 
   const handleDemoCaseChange = (caseKey: string) => {
     localStorage.setItem("tricheck_active_demo_case", caseKey);
-    // Trigger reactive state updates
-    const rep = getReport(id);
-    setReport(rep);
-    if (rep) {
-      setRequest(getRequest(id));
-    }
+    router.push(`/company/report/${caseKey}`);
   };
 
   useEffect(() => {
@@ -176,6 +192,11 @@ function ReportContent() {
     return () => {
       window.removeEventListener("tricheck_mode_change", handleModeChange);
     };
+  }, []);
+
+  useEffect(() => {
+    const list = getAllRequests();
+    setDemoCases(list);
   }, []);
 
   useEffect(() => {
@@ -340,15 +361,15 @@ function ReportContent() {
               <div className="flex items-center gap-2 text-xs">
                 <span className="text-slate-400 font-medium">데모 케이스 전환:</span>
                 <select
-                  value={localStorage.getItem("tricheck_active_demo_case") || "demo_stable"}
+                  value={staticDemoKeys.includes(id) || id.startsWith("demo_") ? id : (localStorage.getItem("tricheck_active_demo_case") || "demo_stable")}
                   onChange={(e) => handleDemoCaseChange(e.target.value)}
                   className="bg-slate-800 border border-slate-700 text-white rounded-lg px-2.5 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-semibold cursor-pointer"
                 >
-                  <option value="demo_overconfident">자신감 과다형 (김민수 - 백엔드 개발자)</option>
-                  <option value="demo_stable">안정형 (이지훈 - PM)</option>
-                  <option value="demo_inconsistent">평가 불일치형 (박서연 - 프로덕트 디자이너)</option>
-                  <option value="demo_conflict">면접관 충돌형 (최현우 - B2B 영업대표)</option>
-                  <option value="demo_specialized">편향된 역량형 (정유진 - 퍼포먼스 마케터)</option>
+                  {allDemoOptions.map((opt) => (
+                    <option key={opt.id} value={opt.id}>
+                      {opt.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -511,7 +532,7 @@ function ReportContent() {
                 <div className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-green-500"></div>
                   <span className="text-gray-500">후보자 자가평가</span>
-                  <span className="text-gray-950 font-bold">{request?.candidate.name || "홍길동"}</span>
+                  <span className="text-gray-950 font-bold">{report.candidate.name}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[10px] text-gray-400 font-bold">
                   <span>2026-05-22 10:14</span>
@@ -523,7 +544,7 @@ function ReportContent() {
                 <div className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-green-500"></div>
                   <span className="text-gray-500">추천인 1 (상사)</span>
-                  <span className="text-gray-950 font-bold">{request?.referees[0]?.name || "이민우"}</span>
+                  <span className="text-gray-950 font-bold">{request?.referees?.[0]?.name || "추천인 1"}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[10px] text-gray-400 font-bold">
                   <span>2026-05-22 11:32</span>
@@ -535,7 +556,7 @@ function ReportContent() {
                 <div className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-green-500"></div>
                   <span className="text-gray-500">추천인 2 (동료)</span>
-                  <span className="text-gray-950 font-bold">{request?.referees[1]?.name || "박지수"}</span>
+                  <span className="text-gray-950 font-bold">{request?.referees?.[1]?.name || "추천인 2"}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[10px] text-gray-400 font-bold">
                   <span>2026-05-22 13:05</span>
@@ -547,7 +568,7 @@ function ReportContent() {
                 <div className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-green-500"></div>
                   <span className="text-gray-500">추천인 3 (담당자)</span>
-                  <span className="text-gray-950 font-bold">{request?.referees[2]?.name || "최진아"}</span>
+                  <span className="text-gray-950 font-bold">{request?.referees?.[2]?.name || "추천인 3"}</span>
                 </div>
                 <div className="flex items-center gap-2 text-[10px] text-gray-400 font-bold">
                   <span>2026-05-22 14:11</span>
@@ -559,7 +580,7 @@ function ReportContent() {
                 <div className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-green-500"></div>
                   <span className="text-gray-500">면접관 평가</span>
-                  <span className="text-gray-950 font-bold">{request?.interviewer.name || "이철수"} ({request?.interviewer.title || "HR 파트장"})</span>
+                  <span className="text-gray-950 font-bold">{request?.interviewer?.name || "면접관"} ({request?.interviewer?.title || "HR 리드"})</span>
                 </div>
                 <div className="flex items-center gap-2 text-[10px] text-gray-400 font-bold">
                   <span>2026-05-22 14:45</span>
@@ -569,6 +590,32 @@ function ReportContent() {
             </div>
           </div>
         )}
+
+        {/* Tab Navigation */}
+        <div className="flex border-b border-gray-200 no-print gap-4 mb-4">
+          <button
+            onClick={() => setActiveTab("summary")}
+            className={`pb-3 text-sm font-extrabold transition-all border-b-2 px-1 ${
+              activeTab === "summary"
+                ? "border-indigo-650 text-indigo-600"
+                : "border-transparent text-gray-500 hover:text-gray-900"
+            }`}
+          >
+            종합 분석 요약
+          </button>
+          <button
+            onClick={() => setActiveTab("details")}
+            className={`pb-3 text-sm font-extrabold transition-all border-b-2 px-1 ${
+              activeTab === "details"
+                ? "border-indigo-650 text-indigo-600"
+                : "border-transparent text-gray-500 hover:text-gray-900"
+            }`}
+          >
+            문항별 상세 대조
+          </button>
+        </div>
+
+        <div className={activeTab === "summary" ? "space-y-8" : "hidden print:block print:space-y-6"}>
 
         {/* 2. Overall Scoring Card Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 print:grid-cols-3 print-avoid-break">
@@ -976,8 +1023,25 @@ function ReportContent() {
           </div>
         )}
 
-        {/* 7. Detailed Question Answers Table Breakdown Page Break */}
-        <div className="space-y-6 print:space-y-4 print-page-break">
+          {activeTab === "summary" && (
+            <div className="flex justify-center pt-4 no-print">
+              <button
+                onClick={() => {
+                  setActiveTab("details");
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+                className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 px-6 py-3 text-sm font-bold text-white shadow-md shadow-indigo-600/10 hover:shadow-indigo-600/20 transition-all active:scale-95"
+              >
+                <span>문항별 상세 대조 및 다면 응답 비교 보기</span>
+                <ArrowLeft className="h-4 w-4 rotate-180" />
+              </button>
+            </div>
+          )}
+        </div>
+
+        <div className={activeTab === "details" ? "space-y-8" : "hidden print:block print:space-y-6"}>
+          {/* 7. Detailed Question Answers Table Breakdown Page Break */}
+          <div className="space-y-6 print:space-y-4 print-page-break">
           <div className="border-b border-gray-200 pb-3">
             <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
               <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-indigo-600 text-white text-xs font-bold">✓</span>
@@ -1058,6 +1122,7 @@ function ReportContent() {
               </div>
             ))}
           </div>
+        </div>
         </div>
 
       </div>
